@@ -47,7 +47,8 @@ RCT_EXPORT_MODULE();
   NSLog(@"iOSSendMsgToRN:%@",noti.userInfo);
   __weak __typeof(self)weakSelf = self;
   dispatch_async(dispatch_get_main_queue(), ^{
-    [weakSelf sendEventWithName:@"nativeToRN" body:noti.userInfo];
+    __strong typeof(weakSelf) strongSelf = weakSelf;
+    [strongSelf sendEventWithName:@"nativeToRN" body:noti.userInfo];
   });
 }
 

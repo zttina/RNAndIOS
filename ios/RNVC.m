@@ -33,10 +33,11 @@
   //3s后传值给RN
   __weak __typeof(self)weakSelf = self;
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    weakSelf.dic[@"name"] = @"fromIOS-更新值";
+    __strong typeof(weakSelf) strongSelf = weakSelf;
+    strongSelf.dic[@"name"] = @"fromIOS-更新值";
     [[NSNotificationCenter defaultCenter]postNotificationName:@"iOSSendMsgToRN"
                                                        object:nil
-                                                     userInfo:weakSelf.dic];
+                                                     userInfo:strongSelf.dic];
   });
 }
 
