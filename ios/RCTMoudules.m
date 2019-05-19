@@ -10,11 +10,13 @@
 #import <React/RCTBridge.h>
 
 @implementation RCTMoudules
+
 //导出模块,不添加参数即默认为该类的类名名
 RCT_EXPORT_MODULE(RTModule)
+
 //RN跳转原生界面，参数：eventName=方法名字，propertyDic=参数，callback可回调
-RCT_EXPORT_METHOD(addEventName:(NSString *)eventName propertyDic:(NSDictionary *)propertyDic callback:(RCTResponseSenderBlock)callback)
-{
+RCT_EXPORT_METHOD(addEventName:(NSString *)eventName propertyDic:(NSDictionary *)propertyDic callback:(RCTResponseSenderBlock)callback) {
+  
   NSMutableDictionary *dic = [NSMutableDictionary dictionaryWithDictionary:@{@"eventName":eventName}];
   if (propertyDic) {
     [dic setObject:propertyDic forKey:@"propertyDic"];

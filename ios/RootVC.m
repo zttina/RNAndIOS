@@ -12,14 +12,14 @@
 @interface RootVC ()
 
 @property (nonatomic,strong) UIButton *toRNBtn;
+
 @end
 
 @implementation RootVC
 
 - (void)viewDidLoad {
-  
   [super viewDidLoad];
-  
+
   self.view.backgroundColor = [UIColor whiteColor];
   self.toRNBtn = [UIButton buttonWithType:UIButtonTypeSystem];
   [self.view addSubview:self.toRNBtn];
@@ -32,12 +32,12 @@
     [self.toRNBtn setTitle:self.fromRN forState:UIControlStateNormal];
   }
 }
+
 - (void)goToRNVC {
   
   //跳到展示RN的页面
   RNVC *vc = [RNVC new];
   [self.navigationController pushViewController:vc animated:YES];
-  
 }
 
 @end

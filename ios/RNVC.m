@@ -11,30 +11,37 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import "RootVC.h"
+
 @interface RNVC ()
 
 @property (nonatomic,strong) NSMutableDictionary *dic;
+
 @end
 
 @implementation RNVC
 
 - (void)viewDidLoad {
-  
   [super viewDidLoad];
+  
   self.dic = [NSMutableDictionary dictionary];
   self.title = @"RN页面";
   [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(receiveFromRN:) name:@"RNToIOS" object:nil];
+  
   //添加RN的view
   [self addRNView];
+  
   //3s后传值给RN
+  __weak __typeof(self)weakSelf = self;
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    self.dic[@"name"] = @"fromIOS-更新值";
+    weakSelf.dic[@"name"] = @"fromIOS-更新值";
     [[NSNotificationCenter defaultCenter]postNotificationName:@"iOSSendMsgToRN"
                                                        object:nil
-                                                     userInfo:self.dic];
+                                                     userInfo:weakSelf.dic];
   });
 }
+
 - (void)receiveFromRN:(NSNotification *)noti {
+  
   NSDictionary *dic = noti.object;
   NSString *selName = dic[@"eventName"];
   NSDictionary *propertyName = dic[@"propertyDic"];
@@ -52,12 +59,14 @@
     }
   }
 }
+
 - (void)RNToIOS:(NSDictionary *)param {
   
   RootVC *rootVC = [[RootVC alloc]init];
   rootVC.fromRN = param[@"fromRN"];
   [self.navigationController pushViewController:rootVC animated:YES];
 }
+
 - (void)RNToIOS {
   
   [self.navigationController pushViewController:[RootVC new] animated:YES];
@@ -73,8 +82,8 @@
   rootView.backgroundColor = [UIColor whiteColor];
   rootView.frame = self.view.bounds;
   [self.view addSubview:rootView];
-  
 }
+
 - (NSURL *)sourceURLForBridge:(RCTBridge *)bridge {
   
 #if DEBUG
